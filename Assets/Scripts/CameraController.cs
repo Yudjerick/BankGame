@@ -13,6 +13,12 @@ public class CameraController : MonoBehaviour
     [Header("Touch Settings")]
     [SerializeField] private float minSwipeDistance = 20f;
 
+    [Header("Camera Zoom Settings")]
+    [SerializeField] private float zoomSpeed = 0.1f;
+    [SerializeField] private float minZoom = 3f;
+    [SerializeField] private float maxZoom = 10f;
+
+
     private Camera mainCamera;
     private Vector3 touchStart;
     private Vector3 cameraStartPos;
@@ -35,6 +41,7 @@ public class CameraController : MonoBehaviour
     {
         HandleInput();
         ApplyBounds();
+        HandleZoom();
     }
 
     private void HandleInput()
@@ -171,4 +178,39 @@ public class CameraController : MonoBehaviour
         );
         Gizmos.DrawWireCube(center, size);
     }
+
+    private void HandleZoom()
+    {
+#if UNITY_EDITOR || UNITY_STANDALONE
+        // Зум колесом мыши
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if (Mathf.Abs(scroll) > 0.01f)
+        {
+            mainCamera.orthographicSize -= scroll * (zoomSpeed * 100f);
+        }
+#endif
+
+#if UNITY_IOS || UNITY_ANDROID
+        // Зум жестом "щипок"
+        if (Input.touchCount == 2)
+        {
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne = Input.GetTouch(1);
+
+            Vector2 prevTouchZeroPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 prevTouchOnePos = touchOne.position - touchOne.deltaPosition;
+
+            float prevMagnitude = (prevTouchZeroPos - prevTouchOnePos).magnitude;
+            float currentMagnitude = (touchZero.position - touchOne.position).magnitude;
+
+            float difference = currentMagnitude - prevMagnitude;
+
+            mainCamera.orthographicSize -= difference * zoomSpeed;
+        }
+#endif
+
+        // Ограничиваем значение зума
+        mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, minZoom, maxZoom);
+    }
+
 }
