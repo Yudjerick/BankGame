@@ -181,16 +181,16 @@ public class CameraController : MonoBehaviour
 
     private void HandleZoom()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE
+//#if UNITY_EDITOR || UNITY_STANDALONE
         // Зум колесом мыши
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         if (Mathf.Abs(scroll) > 0.01f)
         {
             mainCamera.orthographicSize -= scroll * (zoomSpeed * 100f);
         }
-#endif
+//#endif
 
-#if UNITY_IOS || UNITY_ANDROID
+//#if UNITY_IOS || UNITY_ANDROID
         // Зум жестом "щипок"
         if (Input.touchCount == 2)
         {
@@ -207,7 +207,7 @@ public class CameraController : MonoBehaviour
 
             mainCamera.orthographicSize -= difference * zoomSpeed;
         }
-#endif
+//#endif
 
         // Ограничиваем значение зума
         mainCamera.orthographicSize = Mathf.Clamp(mainCamera.orthographicSize, minZoom, maxZoom);

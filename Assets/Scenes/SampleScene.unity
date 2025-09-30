@@ -1160,9 +1160,9 @@ MonoBehaviour:
   minCameraPos: {x: -10, y: -10}
   maxCameraPos: {x: 10, y: 10}
   minSwipeDistance: 20
-  zoomSpeed: 0.1
-  minZoom: 3
-  maxZoom: 10
+  zoomSpeed: 0.01
+  minZoom: 4
+  maxZoom: 12
 --- !u!114 &519420036
 MonoBehaviour:
   m_ObjectHideFlags: 0

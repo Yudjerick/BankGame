@@ -123,16 +123,16 @@ public class BuildingPlacementManager : MonoBehaviour
 
     private Vector3Int GetClickedCell()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE
+//#if UNITY_EDITOR || UNITY_STANDALONE
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             worldPos.z = 0;
             return groundTilemap.WorldToCell(worldPos);
         }
-#endif
+//#endif
 
-#if UNITY_IOS || UNITY_ANDROID
+//#if UNITY_IOS || UNITY_ANDROID
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -143,7 +143,7 @@ public class BuildingPlacementManager : MonoBehaviour
                 return groundTilemap.WorldToCell(worldPos);
             }
         }
-#endif
+//#endif
         return Vector3Int.zero;
     }
 }
